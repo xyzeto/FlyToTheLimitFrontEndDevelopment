@@ -1,131 +1,128 @@
 # FlyToTheLimitFrontEndDevelopment
-This is my final code for my Fly to the Limit web design concept. The website uses HTML,CSS, Javascript and JQuery plugins. 
+This is my Javascript code for my form validation for the Fly to the Limit website 
 
-This is the markup/HTML for the Fly to the Limit Index File
+//---- This is to check whether to throw out an error if there ----//
+//---- is nothing entered into the form. ----//
+function addFormValidation(formElement) {
 
-<!DOCTYPE html>
-<head>
-	<title>Fly to the Limit - Welcome to Fly to the Limit</title>
+	if (formElement === null || formElement.tagName.toUpperCase() !== 'FORM') {
+		throw new Error("first parameter must be a FORM, but got " + formElement.tagName);
+	}
 
-	<meta charset="UTF-8">
-	<meta name="description" content="Fly to the Limit Home Page">
-	<meta name="keywords" content="Fly to the Limit, Why Fly to the Limit, Lake Tour, Sunset Tour, 
-	Glider Tour, Queenstown, New Zealand">
-	<meta name="author" content="Michael Szeto">
+	formElement.addEventListener("submit", function (evt) {
+		console.log("working");
+		if (!validateForm(evt.target)) {
+			evt.preventDefault();
+		}
+	});
 
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
-	<link rel="icon" type="image/png" href="img/favicon.ico">
-</head>
-<body>
-	<header>
-		<div class="nav">
-			<div class="col_4">
-				<h1 id="home"><a href="index.html"><b>Fly to the Limit</b></a></h1>
-			</div>
+	for (var i = 0; i < formElement.length; i += 1) {
+		var field = formElement[i];
+		field.addEventListener('blur', function (evt) {
+			validateField(evt.target);
+		});
+	}
+}
+//---- This is to check whether to throw out an error if there ----//
+//---- is nothing entered into the form. ----//
 
-			<div class="col_8">
-				<ul class="right_nav">				
-					<li><a href="html/tours.html">Tours</a></li>
-					<li><a href="html/gallery.html">Gallery</a></li> 
-					<li><a href="html/booking.html">Book a flight</a></li> 
-					<li><a href="html/prices.html">Pricing</a></li>  
-					<li><a href="html/about.html">About</a></li>
-					<li><a href="html/contact.html">Contact</a></li>
-				</ul>
-			</div>  
-		</div>
-	</header>
-<div class="top">
-</div>
-	<div id="parallax_img">
-		<div class="wrapper">
-			<div class="header_text">
-				<div class="img">
-					<img src="img/logo.png" alt="Queenstown">
-				</div>
-				<h1><b>Welcome to Fly to the Limit</b></h1>
-				<p class="slogan"><i>We take your adventure to the sky's limits.</i></p>
-			</div>
-		</div>
-	</div>
-	<div id="home_content">
-		<div class="wrapper">
-			<div class="col_12">
-				<h3>Why people love us</h3>
-				<p><br>When you go on a tour with Fly to the Limit, you really gain a one of a kind experience. Whenever we take our customers to the sky for the first time, we ensure that they are not only getting a valuable customer service, but also getting the best out of a rare occasion most people may not get to experience.</p>
 
-				<p>We continuously ensure our planes are always operating at their best and are always ready to take on larger groups of seven if need be. In our variety of planes we are always doing everything we can to make the tour up high memorable. </p>				
-			</div>
+//---- This is to check whether to throw out an error if there ----//
+//---- is an error in the form. ----//
+function validateForm(formElement) {
+	var error = false;
 
-			<div class="col_3">
-				<div class="img"><img src="img/cloud.png" alt="">
-					<h4>In the cloud experiences</h4></div>
-				</div>
-				<div class="col_3">
-					<div class="img"><img src="img/ticked.png" alt="">
-						<h4>We tick all the <br>right boxes</h4>
-					</div>
-				</div>
-				<div class="col_3">
-					<div class="img"><img src="img/quote.png" alt="">
-						<h4>Excellent communication</h4></div>
-					</div>
-					<div class="col_3">
-						<div class="img"><img src="img/camera.png" alt="">
-							<h4>Creating unforgetable memories</h4>
-						</div>
-					</div>	
-				</div>
-			</div>
+	for (var i = 0; i < formElement.length; i += 1) {
+	 	var isValid = validateField(formElement[i]);
+	 	if ( ! isValid) { 
+	 		error = true;
+	 	}
+	}
+	return !error;
+}
+//---- This is to check whether to throw out an error if there ----//
+//---- is an error in the form. ----//
 
-			<div class="pale_bg cf">
-				<div class="wrapper">
-					<div class="col-12">
-						<h3>Some popular tours</h3>
-					</div>
 
-					<div class="col_4">
-						<div class="border_in">
-							<a href="html/lake-tour.html">
-								<img src="img/tour-2.jpg" alt="Queenstown Lake">
-								<span>Lake Tour</span>
-							</a>
-						</div>	
-					</div>
 
-					<div class="col_4">
-						<div class="border_in">
-							<a href="html/glider-tour.html">
-								<img src="img/tour-1.jpg" alt="Nikon D810 Airplane">
-								<span>Glider Tour</span>
-							</a>
-						</div>	
-					</div>					
+//---- This is to allow the button to work in the form----//
+function validateField(el) {
+	var error = "";
 
-					<div class="col_4">
-						<div class="border_in">
-							<a href="html/sunset-tour.html">
-								<img src="img/tour-3.jpg" alt="Sunset">
-								<span>Sunset Tour</span>
-							</a>
-						</div>
-					</div>
-					
-				</div>
-			</div>
+	if (el.type === "submit" || 
+		el.type === "reset" || 
+		el.type === "button" || 
+		el.tagName.toUpperCase() === "BUTTON") {
+		return true; // buttons are automatically valid.
+	}
 
-			<footer>
-				<div id="container">
-					<div class="wrapper">
-							<div id="copyright" class="col_6">&copy; Copyright 2015. All rights reserved<br> to Fly to the Limit inc.
-						</div>
-						<div class="col_6"> 				
-							<div class="back_to_top_button">Back to top</div>
-						</div>
-					</div>
-				</div>
-			</footer>
-	  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	  <script src="javascript/back-to-top.js"></script>
-</body>
-</html>
+	var errorDiv = document.querySelector("#" + el.id + "-error");
+	if (errorDiv === null) {
+		console.error(el);
+		throw new Error("could not find error element to match #" + el.id);
+	}
+//---- This is to allow the button to work in the form----//
+
+
+
+//---- This is to allow the email validation in the form to work----//
+//---- This section will throw out an error if there is no valid email address added----//
+	errorDiv.innerHTML = "";
+
+	if (el.classList) {
+	  el.classList.remove('invalid');
+	} else {
+	  el.className = el.className.replace(/(^|\b)invalid(\b|$)/gi, ' ');
+	}
+
+	if (el.type === "email" && !isEmail(el.value)) {
+		error = "please provide a valid email address.";
+	}
+
+	// This is the if statement for the name sections
+
+	if (el.className.indexOf("fv-minlength-") > -1) {
+		var pos = el.className.indexOf("fv-minlength-");
+		var minLength = parseInt( el.className.substr(pos+13), 10);
+		if (el.value.length < minLength) {
+			error = "must be " + minLength + " or more characters long.";
+		}
+	}
+
+		if (el.type === "email" && !isEmail(el.value)) {
+		error = "please provide a valid email address.";
+	}
+//---- This is to allow the email validation in the form to work----//
+//---- This section will throw out an error if there is no valid email address added----//
+
+
+//---- This is the section that will print out an error for the select forms----//
+	if (el.required) { 
+		if (el.type === "checkbox" && !el.checked) {
+			error = "this must be checked.";
+		} else if (el.value.trim() === "") {
+			error = "This field cannot not be blank.";
+		}
+	}
+	if (error !== "") {
+		errorDiv.innerHTML = error;
+		if (el.classList) {
+		  el.classList.add('invalid');
+		} else {
+		  el.className += ' invalid';
+		}
+		return false; // it's invalid
+	}
+
+	return true;
+}
+//---- This is the section that will print out an error for the forms----//
+
+
+//---- This will allow the email input to have the different characters to the input----//
+function isEmail(input) {
+	return input.match(/^([a-z0-9_.\-+]+)@([\da-z.\-]+)\.([a-z\.]{2,})$/);
+}
+//---- This will allow the email input to have the different characters to the input----//
+
+	
